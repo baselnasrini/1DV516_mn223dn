@@ -2,8 +2,6 @@ package assign1;
 
 public class SequenceWithMinimum implements A1SequenceWithMinimum {
 	private Node tail, head;
-	int seqMin = 0;
-	int size = 0;
 
 	public SequenceWithMinimum() {
 		tail = null;
@@ -15,19 +13,11 @@ public class SequenceWithMinimum implements A1SequenceWithMinimum {
 		if (tail == null) {
 			tail = new Node(value);
 			head = tail;
-			seqMin = value;
 		} else {
 			Node newNode = new Node(value);
 			newNode.left = tail;
 			tail.right = newNode;
 			tail = newNode;
-		}
-
-		if (value < seqMin) {
-			seqMin = value;
-			tail.min = value;
-		} else {
-			tail.min = seqMin;
 		}
 	}
 
@@ -37,20 +27,13 @@ public class SequenceWithMinimum implements A1SequenceWithMinimum {
 			return null;
 
 		int temp = tail.value;
-		if (size == 0) {
+		if (tail.left == null) {
 			tail = null;
 			head = null;
 		} else {
 			tail = tail.left;
 			tail.right = null;
 		}
-
-		if (head.min < tail.min) {
-			seqMin = head.min;
-		} else {
-			seqMin = tail.min;
-		}
-
 		return temp;
 	}
 
@@ -59,19 +42,11 @@ public class SequenceWithMinimum implements A1SequenceWithMinimum {
 		if (head == null) {
 			head = new Node(value);
 			tail = head;
-			seqMin = value;
 		} else {
 			Node newNode = new Node(value);
 			newNode.right = head;
 			head.left = newNode;
 			head = newNode;
-		}
-
-		if (value < seqMin) {
-			seqMin = value;
-			head.min = value;
-		} else {
-			head.min = seqMin;
 		}
 	}
 
@@ -84,16 +59,9 @@ public class SequenceWithMinimum implements A1SequenceWithMinimum {
 		if (head.right == null) {
 			tail = null;
 			head = null;
-
 		} else {
 			head = head.right;
 			head.left = null;
-		}
-
-		if (head.min < tail.min) {
-			seqMin = head.min;
-		} else {
-			seqMin = tail.min;
 		}
 		return temp;
 	}
@@ -101,8 +69,9 @@ public class SequenceWithMinimum implements A1SequenceWithMinimum {
 	@Override
 	public Integer findMinimum() {
 		Node current = head;
-		if (current == null)
+		if (current == null) {
 			return null;
+		}
 
 		int min = current.value;
 		while (current.right != null) {
@@ -119,10 +88,11 @@ public class SequenceWithMinimum implements A1SequenceWithMinimum {
 		Node current = head;
 		str.append("{ ");
 		while (current != null) {
-			str.append(current.value + " ");
+			str.append(current.value + ",");
 			current = current.right;
 		}
-		str.append("}");
+		str.deleteCharAt(str.length() - 1);
+		str.append(" }");
 		return str.toString();
 	}
 
@@ -130,7 +100,6 @@ public class SequenceWithMinimum implements A1SequenceWithMinimum {
 		int value;
 		Node right = null;
 		Node left = null;
-		int min = 0;
 
 		Node(int in) {
 			value = in;
