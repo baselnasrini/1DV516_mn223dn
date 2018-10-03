@@ -72,7 +72,6 @@ public class SequenceWithMinimum implements A1SequenceWithMinimum {
 		if (current == null) {
 			return null;
 		}
-
 		int min = current.value;
 		while (current.right != null) {
 			current = current.right;
@@ -98,8 +97,7 @@ public class SequenceWithMinimum implements A1SequenceWithMinimum {
 
 	private class Node {
 		int value;
-		Node right = null;
-		Node left = null;
+		Node right, left = null;
 
 		Node(int in) {
 			value = in;
