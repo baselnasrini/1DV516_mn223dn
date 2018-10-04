@@ -1,4 +1,4 @@
-package assign1;
+package sequenceWithMinimum;
 
 public interface A1SequenceWithMinimum {
 	public void insertRight(Integer value);

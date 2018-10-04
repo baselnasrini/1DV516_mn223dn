@@ -1,18 +1,18 @@
-package assign1;
+package sequenceWithMinimum;
 
 public class SequenceWithMinimum implements A1SequenceWithMinimum {
-	private Node tail, head;
+	private Node head, tail;
 
 	public SequenceWithMinimum() {
-		tail = null;
 		head = null;
+		tail = null;
 	}
 
 	@Override
 	public void insertRight(Integer value) {
-		if (tail == null) {
-			tail = new Node(value);
-			head = tail;
+		if (head == null) {
+			head = new Node(value);
+			tail = head;
 		} else {
 			Node newNode = new Node(value);
 			newNode.left = tail;
@@ -23,7 +23,7 @@ public class SequenceWithMinimum implements A1SequenceWithMinimum {
 
 	@Override
 	public Integer removeRight() {
-		if (tail == null || head == null)
+		if (head == null)
 			return null;
 
 		int temp = tail.value;
@@ -52,7 +52,7 @@ public class SequenceWithMinimum implements A1SequenceWithMinimum {
 
 	@Override
 	public Integer removeLeft() {
-		if (tail == null || head == null)
+		if (head == null)
 			return null;
 
 		int temp = head.value;

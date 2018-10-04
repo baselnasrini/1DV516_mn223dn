@@ -1,4 +1,4 @@
-package assign1;
+package sequenceWithMinimum;
 
 public class SequenceWithMinimumMain {
 
