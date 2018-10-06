@@ -22,13 +22,14 @@ public class BinarySearchTreeADT implements A1Tree {
 	public Integer mostSimilarValue(Integer value) {
 		Integer result=null;
 		if (root != null)
-			result = findMostSimila(value, root, result);
+			result = findMostSimilar(value, root, result);
 		return result;
 	}
 
-	private Integer findMostSimila(Integer value, Node node, Integer result) {
-		if (result == null)
+	private Integer findMostSimilar(Integer value, Node node, Integer result) {
+		if (result == null || value == node.value) {
 			result = node.value;
+		}
 		else {
 			//Calculate the similarity between the given value and the current node.
 			int currentSimilarity = value - node.value;
@@ -51,10 +52,10 @@ public class BinarySearchTreeADT implements A1Tree {
 		}
 		
 		// Search in the children
-		if (node.leftChild != null)
-			result = findMostSimila(value, node.leftChild, result);
-		if (node.rightChild != null)
-			result = findMostSimila(value, node.rightChild, result);
+		if (node.leftChild != null && value < node.value)
+			result = findMostSimilar(value, node.leftChild, result);
+		else if (node.rightChild != null  && value > node.value)
+			result = findMostSimilar(value, node.rightChild, result);
 		
 		return result;
 	}
