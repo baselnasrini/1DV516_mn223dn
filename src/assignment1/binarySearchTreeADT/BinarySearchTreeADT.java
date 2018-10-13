@@ -1,4 +1,4 @@
-package binarySearchTreeADT;
+package assignment1.binarySearchTreeADT;
 
 public class BinarySearchTreeADT implements A1Tree {
 	Node root;

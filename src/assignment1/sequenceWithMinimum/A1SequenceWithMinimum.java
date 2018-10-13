@@ -1,4 +1,4 @@
-package sequenceWithMinimum;
+package assignment1.sequenceWithMinimum;
 
 
 

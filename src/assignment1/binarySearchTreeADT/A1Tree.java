@@ -1,4 +1,4 @@
-package binarySearchTreeADT;
+package assignment1.binarySearchTreeADT;
 
 
 

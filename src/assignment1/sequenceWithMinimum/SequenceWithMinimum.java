@@ -1,4 +1,4 @@
-package sequenceWithMinimum;
+package assignment1.sequenceWithMinimum;
 
 public class SequenceWithMinimum implements A1SequenceWithMinimum {
 	private Node head, tail;
