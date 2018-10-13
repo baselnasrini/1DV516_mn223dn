@@ -14,7 +14,7 @@ public class SequenceWithMinimum implements A1SequenceWithMinimum {
 	public void insertRight(Integer value) {
 		if (value == null)
 			return;
-		
+
 		if (head == null) {
 			head = new Node(value);
 			tail = head;
@@ -70,7 +70,7 @@ public class SequenceWithMinimum implements A1SequenceWithMinimum {
 	public void insertLeft(Integer value) {
 		if (value == null)
 			return;
-		
+
 		if (head == null) {
 			head = new Node(value);
 			tail = head;

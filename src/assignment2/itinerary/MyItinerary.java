@@ -1,6 +1,5 @@
 package assignment2.itinerary;
 
-
 public class MyItinerary implements A2Itinerary<A2Direction> {
 
 	@Override
@@ -28,5 +27,5 @@ public class MyItinerary implements A2Itinerary<A2Direction> {
 	}
 
 //Add your code here
-    
+
 }

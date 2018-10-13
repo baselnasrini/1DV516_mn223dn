@@ -19,7 +19,7 @@ public class SequenceWithMinimumMain {
 		System.out.println("insert right");
 		sequence.insertRight(7);
 		System.out.println(sequence.convertToString());
-		
+
 		System.out.println("insert left");
 		sequence.insertLeft(3);
 		System.out.println(sequence.convertToString());
@@ -61,7 +61,7 @@ public class SequenceWithMinimumMain {
 		System.out.println("Remove left:" + sequence.removeLeft());
 		System.out.println(sequence.convertToString());
 		System.out.println("Min: " + sequence.findMinimum());
-		
+
 		System.out.println("Remove left:" + sequence.removeLeft());
 		System.out.println(sequence.convertToString());
 		System.out.println("Min: " + sequence.findMinimum());
