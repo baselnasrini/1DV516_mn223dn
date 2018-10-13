@@ -5,6 +5,7 @@ public class MyHashTable<T> implements A2HashTable<T> {
 	public MyHashTable() {
 	}
 
+	
 	@Override
 	public void insert(T element) {
 		
