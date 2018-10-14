@@ -14,7 +14,8 @@ public class SequenceWithMinimum implements A1SequenceWithMinimum {
 	public void insertRight(Integer value) {
 		if (value == null)
 			return;
-
+		
+		// if the sequence is empty
 		if (head == null) {
 			head = new Node(value);
 			tail = head;
@@ -28,7 +29,7 @@ public class SequenceWithMinimum implements A1SequenceWithMinimum {
 			tail = newNode;
 
 			// update min information
-			if (value < min) {
+			if (min == null || value < min) {
 				min = value;
 				occurrenceOfMin = 1;
 			}
@@ -41,10 +42,12 @@ public class SequenceWithMinimum implements A1SequenceWithMinimum {
 
 	@Override
 	public Integer removeRight() {
+		// if the sequence is empty
 		if (head == null)
 			return null;
 
 		Integer temp = tail.value;
+		// if the sequence has just one node
 		if (tail.left == null) {
 			tail = null;
 			head = null;
@@ -54,10 +57,10 @@ public class SequenceWithMinimum implements A1SequenceWithMinimum {
 		}
 
 		// update min information
-		// if the deleted value = min, then decrease occurrence to the min
+		// if the deleted value = min, then decrease the occurrence of the min
 		if (temp == min) {
 			occurrenceOfMin--;
-			// if all occurrence of the min was deleted, then make min = null. This will let
+			// if all occurrence of the min were deleted, then make min = null. This will let
 			// the method findMinimum() to do a new search for the min when we called it.
 			if (occurrenceOfMin == 0) {
 				min = null;
@@ -70,7 +73,8 @@ public class SequenceWithMinimum implements A1SequenceWithMinimum {
 	public void insertLeft(Integer value) {
 		if (value == null)
 			return;
-
+		
+		// if the sequence is empty
 		if (head == null) {
 			head = new Node(value);
 			tail = head;
@@ -83,7 +87,7 @@ public class SequenceWithMinimum implements A1SequenceWithMinimum {
 			head = newNode;
 
 			// update min information
-			if (value < min) {
+			if (min == null || value < min) {
 				min = value;
 				occurrenceOfMin = 1;
 			}
@@ -96,10 +100,12 @@ public class SequenceWithMinimum implements A1SequenceWithMinimum {
 
 	@Override
 	public Integer removeLeft() {
+		// if the sequence is empty
 		if (head == null)
 			return null;
 
 		Integer temp = head.value;
+		// if the sequence has just one node
 		if (head.right == null) {
 			tail = null;
 			head = null;
@@ -108,11 +114,11 @@ public class SequenceWithMinimum implements A1SequenceWithMinimum {
 			head.left = null;
 		}
 
-		// if the deleted value = min, then decrease occurrence to the min
+		// if the deleted value = min, then decrease the occurrence of the min
 		if (temp == min) {
 			occurrenceOfMin--;
-			// if all occurrence of the min was deleted, then make min = null. This will let
-			// the method findMinimum() do a new search for the min when we called it.
+			// if all occurrence of the min were deleted, then make min = null. This will let
+			// the method findMinimum() to do a new search for the min when we called it.
 			if (occurrenceOfMin == 0) {
 				min = null;
 			}
