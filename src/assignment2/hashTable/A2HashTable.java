@@ -8,3 +8,4 @@ public interface A2HashTable<T> {
 
     public boolean contains(T element);
 }
+

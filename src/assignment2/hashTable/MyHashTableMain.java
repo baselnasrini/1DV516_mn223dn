@@ -4,7 +4,7 @@ public class MyHashTableMain {
 
 	public static void main(String[] args) {
 
-		A2HashTable<Object> table = new MyHashTable<Object> (7);
+		MyHashTable<Object> table = new MyHashTable<Object> (7);
 		table.insert(76);
 
 		table.insert(40);
@@ -13,13 +13,12 @@ public class MyHashTableMain {
 		table.insert(20);
 		table.insert("asd");
 
-		boolean b = true;
 		String c = "asd" ;
-		System.out.println(table.toString());
+		System.out.println(table.convertToString());
 		System.out.println(table.contains(c));
 
 		table.delete(c);
-		System.out.println(table.toString());
+		System.out.println(table.convertToString());
 
 		System.out.println(table.contains(c));
 	}

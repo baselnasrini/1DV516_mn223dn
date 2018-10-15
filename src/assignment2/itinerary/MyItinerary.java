@@ -1,6 +1,6 @@
 package assignment2.itinerary;
 
-import java.util.HashSet;
+import assignment2.hashTable.MyHashTable;
 
 public class MyItinerary implements A2Itinerary<A2Direction> {
 	
@@ -78,7 +78,7 @@ public class MyItinerary implements A2Itinerary<A2Direction> {
 		int y=0;
 		int counter=0;
 		int [] result = new int [array.length];
-		HashSet <Position> table = new HashSet<Position>();
+		MyHashTable <Position> table = new MyHashTable<Position>();
 		
 		for (int i = 0; i<array.length; i++) {
 			if (array[i] == A2Direction.LEFT)
@@ -94,7 +94,7 @@ public class MyItinerary implements A2Itinerary<A2Direction> {
 			if (table.contains(point)) 
 				result[counter++] = i;
 			else 
-				table.add(point);
+				table.insert(point);
 			
 		}
 		int [] finalResult = new int [counter];
