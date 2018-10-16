@@ -1,10 +1,11 @@
-package assignment2.hashTable;
+package assignment2.measure;
 
-public class MyHashTable<T> implements A2HashTable<T> {
+public class MyModifiedHashTable<K,V> {
 	private int arrSize;
 	private double loadFactor;
 	private int elementsNumber = 0;
-	private Object[] arr;
+	private Object[] keyArr;
+	private Object[] valueArr;
 	private final double DEFULT_LOAD_FACTOR = 0.5;
 	private final int DEFULT_SIZE = 21;
 	private static final Object DELETED = new Object();
@@ -12,36 +13,39 @@ public class MyHashTable<T> implements A2HashTable<T> {
 	// Object[] arr;
 
 	@SuppressWarnings("unchecked")
-	public MyHashTable(int size, double loadFactor) {
+	public MyModifiedHashTable(int size, double loadFactor) {
 		this.arrSize = size;
-		this.arr = (T[]) new Object[arrSize];
+		this.keyArr = (K[]) new Object[arrSize];
+		this.valueArr = (V[]) new Object[arrSize];
 		this.loadFactor = loadFactor;
 		// arr = new Object[size];
 	}
 
 	@SuppressWarnings("unchecked")
-	public MyHashTable(int size) {
+	public MyModifiedHashTable(int size) {
 		this.arrSize = size;
-		this.arr = (T[]) new Object[arrSize];
+		this.keyArr = (K[]) new Object[arrSize];
+		this.valueArr = (V[]) new Object[arrSize];
 		this.loadFactor = DEFULT_LOAD_FACTOR;
 		// arr = new Object[size];
 	}
 
 	@SuppressWarnings("unchecked")
-	public MyHashTable() {
+	public MyModifiedHashTable() {
 		this.arrSize = DEFULT_SIZE;
-		this.arr = (T[]) new Object[arrSize];
+		this.keyArr = (K[]) new Object[arrSize];
+		this.valueArr = (V[]) new Object[arrSize];
 		this.loadFactor = DEFULT_LOAD_FACTOR;
 		// arr = new Object[size];
 	}
 
-	@Override
-	public void insert(T element) {
+	
+	public void insert(K key, V value) {
 		if (highLoadFactor()) {
 			rehash();
 		}
 
-		int index = hash(element);
+		int index = hash(key);
 		int i = 1;
 		int probIndex = index;
 
@@ -50,23 +54,25 @@ public class MyHashTable<T> implements A2HashTable<T> {
 //			elementsNumber++;
 //		} else {
 			do {
-				if (this.arr[probIndex] == null) {
-					this.arr[probIndex] = element;
+				if (this.keyArr[probIndex] == null) {
+					this.keyArr[probIndex] = key;
+					this.valueArr[probIndex] = value;
 					elementsNumber++;
 					return;
 				}
-				else if(this.arr[probIndex].equals(element)) {
-					// the element is already exists
+				else if(this.keyArr[probIndex].equals(key)) {
+					// update the value of the existing key
+					this.valueArr[probIndex] = value;
 					return;
 				}
-				
-				probIndex = findNextProbIndex(element, i++);
+
+				probIndex = findNextProbIndex(key, i++);
 
 			} while (probIndex != index);
 			
 			// if we reached this point, it means the insertion has failed
 			rehash();
-			insert(element);
+			insert(key, value);
 //		}
 	}
 
@@ -74,27 +80,41 @@ public class MyHashTable<T> implements A2HashTable<T> {
 	private void rehash() {
 		this.elementsNumber = 0;
 		this.arrSize *= 2;
-		T[] tempArr = (T[]) this.arr;
-		this.arr = (T[]) new Object[this.arrSize];
+		K[] tempKeyArr = (K[]) this.keyArr;
+		V[] tempValueArr = (V[]) this.valueArr;
 
-		for (int i = 0; i < tempArr.length; i++) {
-			if (tempArr[i] != null && !tempArr[i].equals(DELETED))
-				insert(tempArr[i]);
+		this.keyArr = new Object[this.arrSize];
+		this.valueArr = new Object[this.arrSize];
+
+
+		for (int i = 0; i < tempKeyArr.length; i++) {
+			if (tempKeyArr[i] != null && !tempKeyArr[i].equals(DELETED))
+				insert(tempKeyArr[i], tempValueArr[i]);
 		}
 	}
 
-	@Override
-	public void delete(T element) {
+	
+	public void delete(K element) {
 		Integer pos = findElementIndex(element);
-		if (pos != null)
-			this.arr[pos] = DELETED;
+		if (pos != null) {
+			this.keyArr[pos] = DELETED;
+			this.valueArr[pos] = DELETED;
+		}
 		// else {
 		// System.err.println("The array doesn't contain such element");
 		// }
 	}
 
-	@Override
-	public boolean contains(T element) {
+	@SuppressWarnings("unchecked")
+	public V get(K element) {
+		Integer pos = findElementIndex(element);
+		if (pos != null)
+			return (V) this.valueArr[pos];
+		else
+			return null;
+	}
+	
+	public boolean contains(K element) {
 		Integer pos = findElementIndex(element);
 		if (pos != null)
 			return true;
@@ -114,7 +134,7 @@ public class MyHashTable<T> implements A2HashTable<T> {
 		// return false;
 	}
 
-	private Integer findElementIndex(T element) {
+	private Integer findElementIndex(K element) {
 		int index = hash(element);
 		int probIndex = index;
 		int i = 1;
@@ -125,9 +145,9 @@ public class MyHashTable<T> implements A2HashTable<T> {
 		// return index;
 		// } else {
 		do {
-			if (this.arr[probIndex] == null) {
+			if (this.keyArr[probIndex] == null) {
 				return null;
-			} else if (this.arr[probIndex].equals(element) ) {
+			} else if (this.keyArr[probIndex].equals(element) ) {
 				return probIndex;
 			} else
 				probIndex = findNextProbIndex(element, i++);
@@ -139,15 +159,15 @@ public class MyHashTable<T> implements A2HashTable<T> {
 		return null;
 	}
 
-	private int findNextProbIndex(T element, int i) {
-		return (hash(element) + (int) Math.pow(i, 2)) % this.arrSize;
+	private int findNextProbIndex(K element, int i) {
+		return (hash(element) + (i*i)) % this.arrSize;
 	}
 
 	private boolean highLoadFactor() {
 		return ((double) this.elementsNumber / this.arrSize) > this.loadFactor;
 	}
 
-	private int hash(T element) {
+	private int hash(K element) {
 		int hash = element.hashCode();
 		if (hash < 0)
 			hash *= -1;
@@ -156,9 +176,9 @@ public class MyHashTable<T> implements A2HashTable<T> {
 
 	public String convertToString() {
 		StringBuilder sb = new StringBuilder();
-		for (int i = 0; i < this.arr.length; i++) {
+		for (int i = 0; i < this.keyArr.length; i++) {
 			sb.append(i + " | ");
-			sb.append(this.arr[i] + "\n");
+			sb.append(this.keyArr[i] + "\n");
 		}
 
 		return sb.toString();
