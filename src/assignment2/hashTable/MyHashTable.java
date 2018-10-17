@@ -9,14 +9,11 @@ public class MyHashTable<T> implements A2HashTable<T> {
 	private final int DEFULT_SIZE = 21;
 	private static final Object DELETED = new Object();
 
-	// Object[] arr;
-
 	@SuppressWarnings("unchecked")
 	public MyHashTable(int size, double loadFactor) {
 		this.arrSize = size;
 		this.arr = (T[]) new Object[arrSize];
 		this.loadFactor = loadFactor;
-		// arr = new Object[size];
 	}
 
 	@SuppressWarnings("unchecked")
@@ -24,7 +21,6 @@ public class MyHashTable<T> implements A2HashTable<T> {
 		this.arrSize = size;
 		this.arr = (T[]) new Object[arrSize];
 		this.loadFactor = DEFULT_LOAD_FACTOR;
-		// arr = new Object[size];
 	}
 
 	@SuppressWarnings("unchecked")
@@ -32,42 +28,31 @@ public class MyHashTable<T> implements A2HashTable<T> {
 		this.arrSize = DEFULT_SIZE;
 		this.arr = (T[]) new Object[arrSize];
 		this.loadFactor = DEFULT_LOAD_FACTOR;
-		// arr = new Object[size];
 	}
 
 	@Override
 	public void insert(T element) {
-		if (highLoadFactor()) {
+		if (highLoadFactor())
 			rehash();
-		}
-
 		int index = hash(element);
 		int i = 1;
 		int probIndex = index;
 
-//		if (this.arr[index] == null) {
-//			this.arr[index] = element;
-//			elementsNumber++;
-//		} else {
-			do {
-				if (this.arr[probIndex] == null) {
-					this.arr[probIndex] = element;
-					elementsNumber++;
-					return;
-				}
-				else if(this.arr[probIndex].equals(element)) {
-					// the element is already exists
-					return;
-				}
-				
-				probIndex = findNextProbIndex(element, i++);
+		do {
+			if (this.arr[probIndex] == null) { // add new element
+				this.arr[probIndex] = element;
+				elementsNumber++;
+				return;
+			} else if (this.arr[probIndex].equals(element)) { // the element is already exists
+				return;
+			}
+			probIndex = findNextProbIndex(element, i++); // find the next element's index depending on the quadratic
+															// probing
+		} while (probIndex != index);
 
-			} while (probIndex != index);
-			
-			// if we reached this point, it means the insertion has failed
-			rehash();
-			insert(element);
-//		}
+		// reaching this point means the insertion has failed
+		rehash();
+		insert(element);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -85,64 +70,41 @@ public class MyHashTable<T> implements A2HashTable<T> {
 
 	@Override
 	public void delete(T element) {
-		Integer pos = findElementIndex(element);
+		Integer pos = findElementIndex(element); // find the element's index depending on the quadratic probing
 		if (pos != null)
 			this.arr[pos] = DELETED;
-		// else {
-		// System.err.println("The array doesn't contain such element");
-		// }
 	}
 
 	@Override
 	public boolean contains(T element) {
-		Integer pos = findElementIndex(element);
+		Integer pos = findElementIndex(element); // find the element's index depending on the quadratic probing
 		if (pos != null)
 			return true;
 		return false;
-		// int index = hash(element);
-		//
-		// if (this.arr[index] == null)
-		// return false;
-		// else if (this.arr[index] == element) {
-		// deletedElementIndex = index;
-		// return true;
-		// } else {
-		// Integer pos = findPos(element);
-		// if (pos != null)
-		// return true;
-		// }
-		// return false;
 	}
 
 	private Integer findElementIndex(T element) {
 		int index = hash(element);
 		int probIndex = index;
 		int i = 1;
-
-		// if (this.arr[index] == null)
-		// return null;
-		// else if (this.arr[index] == element) {
-		// return index;
-		// } else {
 		do {
 			if (this.arr[probIndex] == null) {
 				return null;
-			} else if (this.arr[probIndex].equals(element) ) {
+			} else if (this.arr[probIndex].equals(element)) {
 				return probIndex;
 			} else
-				probIndex = findNextProbIndex(element, i++);
-
+				probIndex = findNextProbIndex(element, i++); // find the next element's index depending on the quadratic
+																// probing
 		} while (probIndex != index);
-		// if (probIndex == index)
-		// return -1;
-		// }
 		return null;
 	}
 
+	// A method finds the index of the element depends on the quadratic probing
 	private int findNextProbIndex(T element, int i) {
 		return (hash(element) + (int) Math.pow(i, 2)) % this.arrSize;
 	}
 
+	// A method keeps track if the load factor value reaches the max load factor
 	private boolean highLoadFactor() {
 		return ((double) this.elementsNumber / this.arrSize) > this.loadFactor;
 	}
@@ -158,9 +120,15 @@ public class MyHashTable<T> implements A2HashTable<T> {
 		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < this.arr.length; i++) {
 			sb.append(i + " | ");
-			sb.append(this.arr[i] + "\n");
+			if (this.arr[i] == DELETED)
+				sb.append("DELETED\n");
+			else if (this.arr[i] == null){
+				sb.append("\n");
+			}
+			else {
+				sb.append(this.arr[i] + "\n");
+			}
 		}
-
 		return sb.toString();
 	}
 }

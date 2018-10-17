@@ -4,7 +4,7 @@ public class MyHashTableMain {
 
 	public static void main(String[] args) {
 
-		MyHashTable<Object> table = new MyHashTable<Object> (7);
+		MyHashTable<Object> table = new MyHashTable<Object> (7,0.5);
 		table.insert(76);
 
 		table.insert(40);
@@ -18,6 +18,8 @@ public class MyHashTableMain {
 		System.out.println(table.contains(c));
 
 		table.delete(c);
+		table.delete(40);
+
 		System.out.println(table.convertToString());
 
 		System.out.println(table.contains(c));
