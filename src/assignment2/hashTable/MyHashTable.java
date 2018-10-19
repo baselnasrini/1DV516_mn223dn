@@ -35,7 +35,7 @@ public class MyHashTable<T> implements A2HashTable<T> {
 		if (highLoadFactor())
 			rehash();
 		int index = hash(element);
-		int i = 1;
+		int i = 1;	// the rank of the hash-code
 		int probIndex = index;
 
 		do {

@@ -4,7 +4,7 @@ import assignment2.hashTable.MyHashTable;
 
 public class MyItinerary implements A2Itinerary<A2Direction> {
 
-	private A2Direction[] array;
+	public A2Direction[] array;
 
 	public MyItinerary(A2Direction[] array) {
 		this.array = array;
@@ -28,9 +28,9 @@ public class MyItinerary implements A2Itinerary<A2Direction> {
 
 	@Override
 	public int widthOfItinerary() {
-		int minWidth = 0;
-		int maxWidth = 0;
-		int currentWidth = 0;
+		int minWidth = 0; // the minimum X-coordinate
+		int maxWidth = 0; // the maximum X-coordinate
+		int currentWidth = 0; // the current X-coordinate
 
 		for (A2Direction direction : array) {
 			if (direction == A2Direction.LEFT)
@@ -38,10 +38,10 @@ public class MyItinerary implements A2Itinerary<A2Direction> {
 			else if (direction == A2Direction.RIGHT)
 				currentWidth++;
 
-			if (currentWidth < minWidth)
+			if (currentWidth < minWidth) // update minimum X-coordinate
 				minWidth = currentWidth;
 
-			if (currentWidth > maxWidth)
+			if (currentWidth > maxWidth) // update maximum X-coordinate
 				maxWidth = currentWidth;
 		}
 
@@ -50,9 +50,9 @@ public class MyItinerary implements A2Itinerary<A2Direction> {
 
 	@Override
 	public int heightOfItinerary() {
-		int minHeight = 0;
-		int maxHeight = 0;
-		int currentHeight = 0;
+		int minHeight = 0; // the minimum Y-coordinate
+		int maxHeight = 0; // the maximum Y-coordinate
+		int currentHeight = 0; // the current Y-coordinate
 
 		for (A2Direction direction : array) {
 			if (direction == A2Direction.UP)
@@ -60,24 +60,25 @@ public class MyItinerary implements A2Itinerary<A2Direction> {
 			else if (direction == A2Direction.DOWN)
 				currentHeight++;
 
-			if (currentHeight < minHeight)
+			if (currentHeight < minHeight) // update minimum Y-coordinate
 				minHeight = currentHeight;
 
-			if (currentHeight > maxHeight)
+			if (currentHeight > maxHeight) // update maximum Y-coordinate
 				maxHeight = currentHeight;
 		}
 
-		return maxHeight - minHeight;
+		return (maxHeight - minHeight);
 	}
 
 	@Override
 	public int[] getIntersections() {
-		int x = 0;
-		int y = 0;
-		int counter = 0;
+		int x = 0; // the current X-coordinate
+		int y = 0; // the current Y-coordinate
+		int counter = 0; // Counter for the elements that reaches a point that had been already visited
 		int[] result = new int[array.length];
 		MyHashTable<Position> table = new MyHashTable<Position>();
 
+		// Compute the current X and Y after applying the movement
 		for (int i = 0; i < array.length; i++) {
 			if (array[i] == A2Direction.LEFT)
 				x--;
@@ -89,12 +90,16 @@ public class MyItinerary implements A2Itinerary<A2Direction> {
 				y++;
 
 			Position point = new Position(x, y);
+
+			// If the current point had been already visited, then add it to the result
+			// array and increase the counter
 			if (table.contains(point))
 				result[counter++] = i;
-			else
+			else	// Else add it to the hash table
 				table.insert(point);
 
 		}
+		// Copy the result to a new array with the same length of the counter
 		int[] finalResult = new int[counter];
 		for (int i = 0; i < counter; i++) {
 			finalResult[i] = result[i];
@@ -102,6 +107,7 @@ public class MyItinerary implements A2Itinerary<A2Direction> {
 		return finalResult;
 	}
 
+	// Assistant class
 	private class Position {
 		int x = 0;
 		int y = 0;
